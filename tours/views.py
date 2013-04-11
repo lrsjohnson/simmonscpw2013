@@ -7,6 +7,8 @@ from django.utils import timezone
 
 from django.core.mail import send_mail
 
+from datetime import datetime, timedelta
+
 def index(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
     claimed_reqs = TourReq.objects.filter(claimed=True).order_by('-req_time')
@@ -18,26 +20,52 @@ def index(request):
     return render(request, 'tours/index.html', context)
 
 def newreq(request):
-    tr = TourReq(req_time=timezone.now())
+    unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
+    if len(unclaimed_reqs) > 0 and unclaimed_reqs[0].req_time - timezone.now() < timedelta(minutes=1):
+        return HttpResponse("Must wait at least 1 minute between requests!")
+            
+    req_time = timezone.now()
+    tr = TourReq(req_time=req_time,claim_time=None)
     tr.save()
+
+    subject = "[Sim-CPW-Tours] - "+req_time.strftime("%I:%m%p") +" tour requested!"
+    msg = "A tour was requested at "+req_time.strftime("%I:%m%p") +". If you're free, go to desk and press the black button on the back of the 'easy button' to claim it."
+    from_email = "simmons-tech@mit.edu"
+    to_emails = ["larsj@mit.edu"]
+    send_mail(subject, msg, from_email, to_emails, fail_silently=False)
+    return HttpResponse("email sent: "+subject)
+
+
     return HttpResponse("You created a new request!")
 
 def notifyreq(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('req_time')
     num_unclaimed = len(unclaimed_reqs)
     if num_unclaimed > 0:
-        oldest_time = unclaimed_reqs[0].req_time
-
-        subject = "Simmons CPW Tour Notification - "+str(num_unclaimed)+ " requests waiting!"
-        msg = "There are "+str(num_unclaimed)+ " requests for tours waiting at desk, the oldest being from "+oldest_time.strftime("%I:$m:%s")
+        req_time = unclaimed_reqs[0].req_time
+        req_delay = (timezone.now() - req_time)
+        subject = "[Sim-CPW-Tours] - "+req_time.strftime("%I:%m%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!"
+        msg = "[Sim-CPW-Tours] - "+req_time.strftime("%I:%m%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go to desk and press the black button on the back of the 'easy button' to claim it." 
         from_email = "simmons-tech@mit.edu"
         to_emails = ["larsj@mit.edu"]
         send_mail(subject, msg, from_email, to_emails, fail_silently=False)
-    return HttpResponse("You're checking and emailing out a notice")
+        return HttpResponse("email sent: "+subject)
+    else:
+        return HttpResponse("None")
 
 def claimreq(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
+    if len(unclaimed_reqs) == 0:
+        return HttpResponse("Nothing to claim")
+
+    req_time = unclaimed_reqs[0].req_time
     for req in unclaimed_reqs:
         req.claimed = True
+        req.claimed_time = timezone.now()
         req.save()
-    return HttpResponse("You're claiming a response")
+    subject = "[Sim-CPW-Tours] - "+req_time.strftime("%I:%m%p") +" tour request claimed!"
+    msg = "Thanks for playing! The "+req_time.strftime("%I:%m%p") +" tour request has been claimed."
+    from_email = "simmons-tech@mit.edu"
+    to_emails = ["larsj@mit.edu"]
+    send_mail(subject, msg, from_email, to_emails, fail_silently=False)
+    return HttpResponse("email sent: "+subject)
