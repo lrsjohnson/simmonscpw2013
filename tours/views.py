@@ -12,6 +12,7 @@ from tours.models import TourReq
 
 from events.models import Event
 
+to_emails = ["simmons-cpw-tours-automated@mit.edu"]
 
 def index(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
@@ -78,7 +79,7 @@ def newreq(request):
     subject = "[CPW Tours] Simmons CPW Tours"
     msg = "A tour was requested at "+timezone.localtime(req_time).strftime("%a %I:%M%p") +". If you're free, go to desk and press the black button on the back of the 'easy button' to claim it."
     from_email = "simmons-tech@mit.edu"
-    to_emails = ["larsj@mit.edu"]
+#    to_emails = ["larsj@mit.edu"]
     send_mail(subject, msg, from_email, to_emails, fail_silently=False)
     return HttpResponse("email sent: "+subject)
 
@@ -94,7 +95,7 @@ def notifyreq(request):
         subject = "[CPW Tours] Simmons CPW Tours"
         msg = timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go to desk and press the black button on the back of the 'easy button' to claim it." 
         from_email = "simmons-tech@mit.edu"
-        to_emails = ["larsj@mit.edu"]
+ #       to_emails = ["larsj@mit.edu"]
         send_mail(subject, msg, from_email, to_emails, fail_silently=False)
         context = {'msg':subject}
         return render(request, 'tours/notify.html', context)
@@ -115,6 +116,6 @@ def claimreq(request):
     subject = "[CPW Tours] Simmons CPW Tours"
     msg = "The "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request has been claimed."
     from_email = "simmons-tech@mit.edu"
-    to_emails = ["larsj@mit.edu"]
+#    to_emails = ["larsj@mit.edu"]
     send_mail(subject, msg, from_email, to_emails, fail_silently=False)
     return HttpResponse("email sent: "+subject)
