@@ -74,7 +74,7 @@ def newreq(request):
     tr = TourReq(req_time=req_time,claim_time=None)
     tr.save()
 
-    subject = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour requested!"
+    subject = "[CPW Tours] Simmons CPW Tours"
     msg = "A tour was requested at "+timezone.localtime(req_time).strftime("%a %I:%M%p") +". If you're free, go to desk and press the black button on the back of the 'easy button' to claim it."
     from_email = "simmons-tech@mit.edu"
     to_emails = ["larsj@mit.edu"]
@@ -87,14 +87,14 @@ def newreq(request):
 def notifyreq(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('req_time')
     num_unclaimed = len(unclaimed_reqs)
-    if num_unclaimed > 0 and timezone.now() - unclaimed_reqs[0].req_time > timedelta(minutes=3):
+    if num_unclaimed > 0 and timezone.now() - unclaimed_reqs[0].req_time > timedelta(minutes=5):
         req_time = unclaimed_reqs[0].req_time
         req_delay = (timezone.now() - req_time)
-        subject = "Re: [Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request - unclaimed for "+str(req_delay.seconds / 60)+" minutes!"
-        msg = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go to desk and press the black button on the back of the 'easy button' to claim it." 
+        subject = "[CPW Tours] Simmons CPW Tours"
+        msg = timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go to desk and press the black button on the back of the 'easy button' to claim it." 
         from_email = "simmons-tech@mit.edu"
         to_emails = ["larsj@mit.edu"]
-#        send_mail(subject, msg, from_email, to_emails, fail_silently=False)
+        send_mail(subject, msg, from_email, to_emails, fail_silently=False)
         context = {'msg':subject}
         return render(request, 'tours/notify.html', context)
     else:
@@ -111,7 +111,7 @@ def claimreq(request):
         req.claimed = True
         req.claim_time = timezone.now()
         req.save()
-    subject = "Re: [Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request"
+        subject = "[CPW Tours] Simmons CPW Tours"
     msg = "Thanks for playing! The "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request has been claimed."
     from_email = "simmons-tech@mit.edu"
     to_emails = ["larsj@mit.edu"]
