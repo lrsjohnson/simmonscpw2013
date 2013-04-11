@@ -127,6 +127,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'django.contrib.admin',
     'django.contrib.admindocs',
+
+    'tours',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -158,3 +160,7 @@ LOGGING = {
     }
 }
 
+try:
+    from local_settings import *
+except ImportError, exp:
+    pass

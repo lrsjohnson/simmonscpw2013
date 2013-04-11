@@ -1,0 +1,10 @@
+{% if latest_req_list %}
+Latest requests:
+<ul>
+  {% for req in latest_req_list %}
+    <li>{{req.req_time}}</li>
+  {% endfor %}
+</ul>
+{% else %}
+    <p> No requests!</p>
+{% endif %}
