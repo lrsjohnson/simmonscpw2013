@@ -75,7 +75,7 @@ Welcome to Simmons Hall! Simmons is home to 340 awesome undergraduates, 5,538 wi
 <p>{{now_event.description}}</p>
 {% elif next_event %}
   <h3 style='text-align:center'>Upcoming:</h3>
-<p style='text-align:center'><b>{{next_event.title}}:</b> {{next_event.start_time|date:"g:i a"}} - {{next_event.end_time|date:"g:i a"}} </p>
+<p style='text-align:center'><b>{{next_event.title}}:</b> {{next_event.start_time|date:"g:i a"}} - {{next_event.end_time|date:"g:i a"}} <br />{{next_event.location}}</p>
 <p>{{next_event.description}}</p>
 {% endif %}
 
