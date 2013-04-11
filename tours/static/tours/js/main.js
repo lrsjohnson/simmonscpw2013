@@ -2,21 +2,21 @@ document.onkeypress = checkkey;
 
 function newRequest() {
     $.ajax({
-	url: "/tours/new",
+	url: "new",
 	success: function( data ) {location.reload();}
     });
 }
 
 function claimRequest() {
     $.ajax({
-	url: "/tours/claim",
+	url: "claim",
 	success: function( data ) {location.reload();}
     });
 
 }
 function notifycheckNotify() {
     $.ajax({
-	url: "/tours/notify",
+	url: "notify",
 	success: function( data ) {}
     });
 }
