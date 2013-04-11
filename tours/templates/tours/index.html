@@ -1,10 +1,18 @@
-{% if latest_req_list %}
-Latest requests:
+Unclaimed:
+{% if unclaimed %}
 <ul>
-  {% for req in latest_req_list %}
-    <li>{{req.req_time}}</li>
+  {% for req in unclaimed %}
+    <li>{{req.req_time|date:"l F j g:m:s a"}} Claimed: {{req.claimed}}</li>
   {% endfor %}
 </ul>
-{% else %}
-    <p> No requests!</p>
+{% endif %}
+<br />
+Claimed:
+{% if claimed %}
+<ul>
+  {% for req in claimed %}
+    <li>{{req.req_time|date:"l F j g:m:s a"}} Claimed: {{req.claimed}}</li>
+  {% endfor %}
+</ul>
+
 {% endif %}

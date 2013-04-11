@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
 
-    url(r'^tours/', include('tours.urls')),
+    url(r'^tours/', include('tours.urls', namespace='tours')),
     # Uncomment the next line to enable 
     url(r'^admin/', include(admin.site.urls)),
 )
