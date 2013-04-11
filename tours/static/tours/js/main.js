@@ -57,5 +57,5 @@ $(document).ready(function(){
 
 
 window.setInterval(function(){
-    checkNotify();
+    window.reload();
 }, 600000);

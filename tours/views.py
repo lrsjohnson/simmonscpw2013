@@ -111,8 +111,8 @@ def claimreq(request):
         req.claimed = True
         req.claim_time = timezone.now()
         req.save()
-        subject = "[CPW Tours] Simmons CPW Tours"
-    msg = "Thanks for playing! The "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request has been claimed."
+    subject = "[CPW Tours] Simmons CPW Tours"
+    msg = "The "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request has been claimed."
     from_email = "simmons-tech@mit.edu"
     to_emails = ["larsj@mit.edu"]
     send_mail(subject, msg, from_email, to_emails, fail_silently=False)
