@@ -6,7 +6,19 @@
 <script language="javascript" src="{% static 'tours/js/main.js'%}"></script>
 
 <style>
+body {font-size:150%}
+#top {
+        position:absolute;
+
+        width:88%;
+	overflow:hidden;
+        margins:auto auto;
+        margin-top:220px;
+        margin-left:2%;
+        margin-bottom:100px;
+}
 #layout {
+        margin-top:120px;
 	clear:left;
 	float:left;
 	width:100%;
@@ -42,29 +54,52 @@
       alt="Simmons Hall" title="Simmons Hall" /></a>
     </h1>
   </header>
+<div id='top' class='container'>
+Welcome to Simmons Hall! Simmons is home to 340 awesome undergraduates, 5,538 windows, and an unknown population of velociraptors. It’s a phenomenal place to call home during your time at the Institute, and we can’t wait to show you why!
+</div>
 <div id='layout'>
 <div id='content'>
 <div id='leftbox'  class='container'>
-  <h2>Events</h2>
+  <h2 style='margin-top:10px'>CPW Events</h2>
+  <p>We have 20 events planned for you over the weekend. Bring your friends, bring your A-game, and get ready to have a great time!</p>
 {% if now_event %}
-<p>Event happening now: {{now_event.title}}</p>
-{% endif %}
-{% if next_event %}
-<p>Event happening next: {{next_event.title}}</p>
+  <h3 style='text-align:center'>Right Now:</h3>
+<p style='text-align:center'><b>{{now_event.title}}:</b> {{next_event.start_time|date:"g:i a"}} - {{next_event.end_time|date:"g:i a"}} </p>
+<p>{{next_event.description}}</p>
+<p>{{now_event.title}}</p>
+{% elif next_event %}
+  <h3 style='text-align:center'>Upcoming:</h3>
+<p style='text-align:center'><b>{{next_event.title}}:</b> {{next_event.start_time|date:"g:i a"}} - {{next_event.end_time|date:"g:i a"}} </p>
+<p>{{next_event.description}}</p>
 {% endif %}
 
 
 </div>
 
 <div id='rightbox' class='container'>
-  <h2>Tours</h2>
+  <h2 style='margin-top:10px'>Dorm Tours</h2>
+Opened in 2002, Simmons has wone multiple awards for its unique architectural aspects. We are offering tours throughout CPW!
+  <p></p>
+{% if last_request %}
+  <h3 style='text-align:center'>Tour Requested:</h3>
+  <p>Thank you for requesting a tour! A tour guide should be down shortly. In the mean time, feel free to relax in the mailbox lounge.</p>
+{% else %}
 {% if last_tour %}
-<p>Last tour left at {{last_tour|date:"g:i a"}}</p>
+  <h3 style='text-align:center'>Request a Tour:</h3>
+  <p>To request a tour, simply press the 'easy button' below.</p>
+
+{% else %}
+{% endif %}
+{% endif %}
+<p style='font-size:70%'>
+{% if last_tour %}
+Most recent tour left at {{last_tour|date:"g:i a"}}&nbsp;
+{% endif %}
+{% if last_request %}
+Tour requested at {{last_request|date:"g:i a"}}</p>
 {% endif %}
 
-{% if last_request %}
-<p>Last tour requested at {{last_request|date:"g:i a"}}</p>
-{% endif %}
+
 </div>
 </div>
 </div>
