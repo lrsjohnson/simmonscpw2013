@@ -10,7 +10,7 @@ body {font-size:150%}
 #top {
         position:absolute;
 
-        width:88%;
+        width:83%;
 	overflow:hidden;
         margins:auto auto;
         margin-top:220px;
@@ -44,9 +44,16 @@ body {font-size:150%}
 	left:56%;
 	overflow:hidden;
 }
+#wrapper {
+margin-left:100px;
+margin-right:0px;
+margin-top:0px;
+margin-bottom:0px;
+}
 </style>
 </head>
 <body>
+<div id='wrapper'>
   <img class="bg" src="{%static 'tours/img/bg.jpg'%}" alt="" />
   <header>
     <h1>
@@ -99,6 +106,7 @@ Tour requested at {{last_request|date:"g:i a"}}</p>
 {% endif %}
 
 
+</div>
 </div>
 </div>
 </div>

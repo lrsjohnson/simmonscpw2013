@@ -12,6 +12,7 @@ from tours.models import TourReq
 
 from events.models import Event
 
+
 def index(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
     claimed_reqs = TourReq.objects.filter(claimed=True).order_by('-claim_time')

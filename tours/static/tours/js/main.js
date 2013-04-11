@@ -1,4 +1,3 @@
-document.onkeypress = checkkey;
 
 function newRequest() {
     $.ajax({
@@ -12,7 +11,7 @@ function claimRequest() {
 	url: "claim",
 	success: function( data ) {location.reload();}
     });
-
+2
 }
 function checkNotify() {
     $.ajax({
@@ -26,11 +25,11 @@ function checkNotify() {
 Keys to Functions
 */
 
-function onW(evt) {
+function onA(evt) {
     newRequest();
 }
 
-function onA(evt) {
+function onW(evt) {
     claimRequest();
 }
 
@@ -54,8 +53,7 @@ $(document).ready(function(){
     $('#IDofTextInput').bind('keyup',checkkey);
 });
 
-
-
 window.setInterval(function(){
     window.reload();
 }, 600000);
+
