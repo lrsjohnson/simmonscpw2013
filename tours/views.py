@@ -94,10 +94,12 @@ def notifyreq(request):
         msg = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go to desk and press the black button on the back of the 'easy button' to claim it." 
         from_email = "simmons-tech@mit.edu"
         to_emails = ["larsj@mit.edu"]
-        send_mail(subject, msg, from_email, to_emails, fail_silently=False)
-        return HttpResponse("email sent: "+subject)
+#        send_mail(subject, msg, from_email, to_emails, fail_silently=False)
+        context = {'msg':subject}
+        return render(request, 'tours/notify.html', context)
     else:
-        return HttpResponse("None")
+        context = {}
+        return render(request, 'tours/notify.html', context)
 
 def claimreq(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')

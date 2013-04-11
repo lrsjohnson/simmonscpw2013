@@ -14,7 +14,7 @@ function claimRequest() {
     });
 
 }
-function notifycheckNotify() {
+function checkNotify() {
     $.ajax({
 	url: "notify",
 	success: function( data ) {}
