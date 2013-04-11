@@ -12,6 +12,7 @@ from tours.models import TourReq
 
 from events.models import Event
 
+
 def index(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
     claimed_reqs = TourReq.objects.filter(claimed=True).order_by('-claim_time')
@@ -111,7 +112,7 @@ def claimreq(request):
         req.claimed = True
         req.claim_time = timezone.now()
         req.save()
-    subject = "Re: [Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request"
+    subject = "Re: [Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request - Claimed"
     msg = "Thanks for playing! The "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request has been claimed."
     from_email = "simmons-tech@mit.edu"
     to_emails = ["larsj@mit.edu"]
