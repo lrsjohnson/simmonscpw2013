@@ -93,7 +93,7 @@ def notifyreq(request):
         req_time = unclaimed_reqs[0].req_time
         req_delay = (timezone.now() - req_time)
         subject = "[CPW Tours] Simmons CPW Tours"
-        msg = timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go to desk and press the black button on the back of the 'easy button' to claim it." 
+        msg = timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go and speak to the desk worker to claim it (they will push 'w' on the computer keyboard that's there)"
         from_email = "simmons-tech@mit.edu"
  #       to_emails = ["larsj@mit.edu"]
         send_mail(subject, msg, from_email, to_emails, fail_silently=False)
