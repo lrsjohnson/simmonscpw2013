@@ -289,9 +289,8 @@ img.bg {
 }
 
 .container {
-    margin-left: auto;
-    margin-right: auto;
-    padding: 30px;
+    margin-top:-50px;
+    padding:15px;
     background: rgba(255, 255, 255, 0.9);
      -moz-border-radius: 10px;
     -webkit-border-radius: 10px;

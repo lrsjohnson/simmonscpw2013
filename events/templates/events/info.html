@@ -1,0 +1,6 @@
+All Events
+<ul>
+  {% for evt in all_events %}
+    <li><b>{{evt.title}}:</b> {{evt.start_time|date:"l F j g:i:s a"}}  - {{evt.start_time|date:"l F j g:i:s a"}}</li>
+  {% endfor %}
+</ul>

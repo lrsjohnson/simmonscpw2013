@@ -7,3 +7,6 @@ class Event(models.Model):
     start_time = models.DateTimeField('start')
     end_time = models.DateTimeField('end')
     location = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.title

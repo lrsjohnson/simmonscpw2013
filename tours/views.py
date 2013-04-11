@@ -2,33 +2,54 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from tours.models import TourReq
 from django.utils import timezone
 
 from django.core.mail import send_mail
 
 from datetime import datetime, timedelta
 
+from tours.models import TourReq
+
+from events.models import Event
+
 def index(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
     claimed_reqs = TourReq.objects.filter(claimed=True).order_by('-claim_time')
 
+    # last request
     if len(unclaimed_reqs) == 0:
         last_request = None
     else:
         last_request = unclaimed_reqs[0].req_time
 
+    # last tour
     if len(claimed_reqs) == 0:
         last_tour = None
     elif timezone.now() - claimed_reqs[0].claim_time > timedelta(minutes=60):
         last_tour = None
     else:
         last_tour = claimed_reqs[0].claim_time
-                                                                
+
+    # now event
+    now_events = Event.objects.filter(start_time__lt =timezone.now()).filter(end_time__gt = timezone.now())
+    if len(now_events) > 0:
+        now_event = now_events[0]
+    else:
+        now_event = None
+    
+    # next event
+    next_events = Event.objects.filter(start_time__gt=timezone.now())
+    if len(next_events) > 0:
+        next_event = next_events[0]
+    else:
+        next_event = None
     
     context = {
         'last_tour': last_tour,
-        'last_request': last_request
+        'last_request': last_request,
+        'now_event': now_event,
+        'next_event': next_event,
+        'next_events': next_events,
     }
 
     return render(request, 'tours/index.html', context)

@@ -16,21 +16,24 @@
 	float:left;
 	width:100%;
 	position:relative;
-	right:50%;
+	right:30%;
 }
 #leftbox {
 	float:left;
-	width:41%;
+	width:55%;
 	position:relative;
-	left:52%;
+	left:32%;
 	overflow:hidden;
+        height:700px;
 }
 #rightbox {
+        margin-top:-200px;
 	float:left;
 	width:41%;
 	position:relative;
-	left:56%;
+	left:36%;
 	overflow:hidden;
+        height:860px;
 }
 </style>
 </head>
@@ -45,6 +48,10 @@
 <div id='layout'>
 <div id='content'>
 <div id='leftbox'  class='container'>
+&nbsp;
+</div>
+
+<div id='rightbox' class='container'>
   <h2>Events</h2>
 {% if now_event %}
 <p>Event happening now: {{now_event.title}}</p>
@@ -53,18 +60,6 @@
 <p>Event happening next: {{next_event.title}}</p>
 {% endif %}
 
-
-</div>
-
-<div id='rightbox' class='container'>
-  <h2>Tours</h2>
-{% if last_tour %}
-<p>Last tour left at {{last_tour|date:"g:i a"}}</p>
-{% endif %}
-
-{% if last_request %}
-<p>Last tour requested at {{last_request|date:"g:i a"}}</p>
-{% endif %}
 </div>
 </div>
 </div>
