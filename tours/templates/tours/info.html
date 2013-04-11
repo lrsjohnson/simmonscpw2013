@@ -1,0 +1,18 @@
+Unclaimed:
+{% if unclaimed %}
+<ul>
+  {% for req in unclaimed %}
+    <li>{{req.req_time|date:"l F j g:i:s a"}} Claimed: {{req.claimed}} @ {{req.claim_time|date:"l F j g:i:s a"}}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+<br />
+Claimed:
+{% if claimed %}
+<ul>
+  {% for req in claimed %}
+    <li>{{req.req_time|date:"l F j g:i:s a"}} Claimed: {{req.claimed}}  @ {{req.claim_time|date:"l F j g:i:s a"}}</li>
+  {% endfor %}
+</ul>
+
+{% endif %}

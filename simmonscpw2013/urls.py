@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 
 
     url(r'^tours/', include('tours.urls', namespace='tours')),
+    url(r'^events/', include('events.urls', namespace='events')),
     # Uncomment the next line to enable 
     url(r'^admin/', include(admin.site.urls)),
 )

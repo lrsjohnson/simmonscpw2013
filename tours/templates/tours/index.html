@@ -1,18 +1,44 @@
-Unclaimed:
-{% if unclaimed %}
-<ul>
-  {% for req in unclaimed %}
-    <li>{{req.req_time|date:"l F j g:m:s a"}} Claimed: {{req.claimed}}</li>
-  {% endfor %}
-</ul>
-{% endif %}
-<br />
-Claimed:
-{% if claimed %}
-<ul>
-  {% for req in claimed %}
-    <li>{{req.req_time|date:"l F j g:m:s a"}} Claimed: {{req.claimed}}</li>
-  {% endfor %}
-</ul>
+{% load staticfiles %}
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'tours/style.css' %}" />
 
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script language="javascript" src="{% static 'tours/js/main.js'%}"></script>
+
+<style>
+
+#leftbox {
+float:left;
+width:300px;
+}
+#righthbox {
+float:right;
+width:300px;
+}
+</style>
+</head>
+<body>
+  <img class="bg" src="{%static 'tours/img/bg.jpg'%}" alt="" />
+  <header>
+    <h1>
+      <a><img id="simmons-logo" src="{% static 'tours/img/logo.png' %}"
+      alt="Simmons Hall" title="Simmons Hall" /></a>
+    </h1>
+  </header>
+
+<div id='leftbox' class='container'>
+  <h2>Events</h2>
+</div>
+
+<div id='rightbox' class='container'>
+  <h2>Tours</h2>
+{% if last_tour %}
+<p>Last tour left at {{last_tour|date:"g:i a"}}</p>
 {% endif %}
+
+{% if last_request %}
+<p>Last tour requested at {{last_request|date:"g:i a"}}</p>
+{% endif %}
+</div>
+<div id='results'>Results go here</div>
+</body>

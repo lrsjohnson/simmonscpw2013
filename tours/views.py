@@ -11,13 +11,38 @@ from datetime import datetime, timedelta
 
 def index(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
+    claimed_reqs = TourReq.objects.filter(claimed=True).order_by('-claim_time')
+
+    if len(unclaimed_reqs) == 0:
+        last_request = None
+    else:
+        last_request = unclaimed_reqs[0].req_time
+
+    if len(claimed_reqs) == 0:
+        last_tour = None
+    elif timezone.now() - claimed_reqs[0].claim_time > timedelta(minutes=60):
+        last_tour = None
+    else:
+        last_tour = claimed_reqs[0].claim_time
+                                                                
+    
+    context = {
+        'last_tour': last_tour,
+        'last_request': last_request
+    }
+
+    return render(request, 'tours/index.html', context)
+
+
+def info(request):
+    unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
     claimed_reqs = TourReq.objects.filter(claimed=True).order_by('-req_time')
     context = {
         'unclaimed': unclaimed_reqs,
         'claimed': claimed_reqs,
     }
 
-    return render(request, 'tours/index.html', context)
+    return render(request, 'tours/info.html', context)
 
 def newreq(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
@@ -41,10 +66,10 @@ def newreq(request):
 def notifyreq(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('req_time')
     num_unclaimed = len(unclaimed_reqs)
-    if num_unclaimed > 0:
+    if num_unclaimed > 0 and timezone.now() - unclaimed_reqs[0].req_time > timedelta(minutes=3):
         req_time = unclaimed_reqs[0].req_time
         req_delay = (timezone.now() - req_time)
-        subject = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!"
+        subject = "Re: [Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request - unclaimed for "+str(req_delay.seconds / 60)+" minutes!"
         msg = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go to desk and press the black button on the back of the 'easy button' to claim it." 
         from_email = "simmons-tech@mit.edu"
         to_emails = ["larsj@mit.edu"]
@@ -61,9 +86,9 @@ def claimreq(request):
     req_time = unclaimed_reqs[0].req_time
     for req in unclaimed_reqs:
         req.claimed = True
-        req.claimed_time = timezone.now()
+        req.claim_time = timezone.now()
         req.save()
-    subject = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request claimed!"
+    subject = "Re: [Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request"
     msg = "Thanks for playing! The "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request has been claimed."
     from_email = "simmons-tech@mit.edu"
     to_emails = ["larsj@mit.edu"]
