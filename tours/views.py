@@ -21,18 +21,19 @@ def index(request):
 
 def newreq(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
-    if len(unclaimed_reqs) > 0 and unclaimed_reqs[0].req_time - timezone.now() < timedelta(minutes=1):
-        return HttpResponse("Must wait at least 1 minute between requests!")
+    if len(unclaimed_reqs) > 0 and  timezone.now() - unclaimed_reqs[0].req_time < timedelta(minutes=1):
+        pass
+        #return HttpResponse("Must wait at least 1 minute between requests!")
             
     req_time = timezone.now()
     tr = TourReq(req_time=req_time,claim_time=None)
     tr.save()
 
-    subject = "[Sim-CPW-Tours] - "+req_time.strftime("%I:%m%p") +" tour requested!"
-    msg = "A tour was requested at "+req_time.strftime("%I:%m%p") +". If you're free, go to desk and press the black button on the back of the 'easy button' to claim it."
+    subject = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour requested!"
+    msg = "A tour was requested at "+timezone.localtime(req_time).strftime("%a %I:%M%p") +". If you're free, go to desk and press the black button on the back of the 'easy button' to claim it."
     from_email = "simmons-tech@mit.edu"
     to_emails = ["larsj@mit.edu"]
-    send_mail(subject, msg, from_email, to_emails, fail_silently=False)
+ #   send_mail(subject, msg, from_email, to_emails, fail_silently=False)
     return HttpResponse("email sent: "+subject)
 
 
@@ -44,11 +45,11 @@ def notifyreq(request):
     if num_unclaimed > 0:
         req_time = unclaimed_reqs[0].req_time
         req_delay = (timezone.now() - req_time)
-        subject = "[Sim-CPW-Tours] - "+req_time.strftime("%I:%m%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!"
-        msg = "[Sim-CPW-Tours] - "+req_time.strftime("%I:%m%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go to desk and press the black button on the back of the 'easy button' to claim it." 
+        subject = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!"
+        msg = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go to desk and press the black button on the back of the 'easy button' to claim it." 
         from_email = "simmons-tech@mit.edu"
         to_emails = ["larsj@mit.edu"]
-        send_mail(subject, msg, from_email, to_emails, fail_silently=False)
+#        send_mail(subject, msg, from_email, to_emails, fail_silently=False)
         return HttpResponse("email sent: "+subject)
     else:
         return HttpResponse("None")
@@ -63,9 +64,9 @@ def claimreq(request):
         req.claimed = True
         req.claimed_time = timezone.now()
         req.save()
-    subject = "[Sim-CPW-Tours] - "+req_time.strftime("%I:%m%p") +" tour request claimed!"
-    msg = "Thanks for playing! The "+req_time.strftime("%I:%m%p") +" tour request has been claimed."
+    subject = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request claimed!"
+    msg = "Thanks for playing! The "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request has been claimed."
     from_email = "simmons-tech@mit.edu"
     to_emails = ["larsj@mit.edu"]
-    send_mail(subject, msg, from_email, to_emails, fail_silently=False)
+#    send_mail(subject, msg, from_email, to_emails, fail_silently=False)
     return HttpResponse("email sent: "+subject)
