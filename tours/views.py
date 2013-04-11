@@ -22,8 +22,7 @@ def index(request):
 def newreq(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
     if len(unclaimed_reqs) > 0 and  timezone.now() - unclaimed_reqs[0].req_time < timedelta(minutes=1):
-        pass
-        #return HttpResponse("Must wait at least 1 minute between requests!")
+        return HttpResponse("Must wait at least 1 minute between requests!")
             
     req_time = timezone.now()
     tr = TourReq(req_time=req_time,claim_time=None)
@@ -33,7 +32,7 @@ def newreq(request):
     msg = "A tour was requested at "+timezone.localtime(req_time).strftime("%a %I:%M%p") +". If you're free, go to desk and press the black button on the back of the 'easy button' to claim it."
     from_email = "simmons-tech@mit.edu"
     to_emails = ["larsj@mit.edu"]
- #   send_mail(subject, msg, from_email, to_emails, fail_silently=False)
+    send_mail(subject, msg, from_email, to_emails, fail_silently=False)
     return HttpResponse("email sent: "+subject)
 
 
@@ -49,7 +48,7 @@ def notifyreq(request):
         msg = "[Sim-CPW-Tours] - "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request unclaimed for "+str(req_delay.seconds / 60)+" minutes!  If you're free, go to desk and press the black button on the back of the 'easy button' to claim it." 
         from_email = "simmons-tech@mit.edu"
         to_emails = ["larsj@mit.edu"]
-#        send_mail(subject, msg, from_email, to_emails, fail_silently=False)
+        send_mail(subject, msg, from_email, to_emails, fail_silently=False)
         return HttpResponse("email sent: "+subject)
     else:
         return HttpResponse("None")
@@ -68,5 +67,5 @@ def claimreq(request):
     msg = "Thanks for playing! The "+timezone.localtime(req_time).strftime("%a %I:%M%p") +" tour request has been claimed."
     from_email = "simmons-tech@mit.edu"
     to_emails = ["larsj@mit.edu"]
-#    send_mail(subject, msg, from_email, to_emails, fail_silently=False)
+    send_mail(subject, msg, from_email, to_emails, fail_silently=False)
     return HttpResponse("email sent: "+subject)
