@@ -25,32 +25,24 @@ function checkNotify() {
 Keys to Functions
 */
 
-function onA(evt) {
+function onR(evt) {
     newRequest();
 }
 
-function onW(evt) {
+function onC(evt) {
     claimRequest();
 }
 
-function onS(evt) {
-}
-
-function onD(evt) {
-}
-
-
 function checkkey(evt)
 {
-    var evt  = (evt) ? evt : ((event) ? event : null); 
-    if ((evt.keyCode == 119)){onW(evt);}
-    else if (evt.keyCode == 97) {onA(evt);}
-    else if (evt.keyCode == 115)  {onS(evt);}
-    else if (evt.keyCode == 100)  {onD(evt);}
+    var evt  = (evt) ? evt : ((event) ? event : null);
+    console.log(evt.keyCode);
+    if ((evt.keyCode == 67)){onC(evt);}
+    else if (evt.keyCode == 82) {onR(evt);}
 }
 
 $(document).ready(function(){
-    $('#IDofTextInput').bind('keyup',checkkey);
+    $('body').bind('keyup',checkkey);
 });
 
 window.setInterval(function(){

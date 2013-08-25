@@ -12,7 +12,7 @@ from tours.models import TourReq
 
 from events.models import Event
 
-to_emails = ["simmons-cpw-tours-automated@mit.edu"]
+to_emails = [] #"simmons-cpw-tours-automated@mit.edu"]
 
 def index(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
@@ -33,14 +33,14 @@ def index(request):
         last_tour = claimed_reqs[0].claim_time
 
     # now event
-    now_events = Event.objects.filter(start_time__lt =timezone.now()).filter(end_time__gt = timezone.now())
+    now_events = Event.objects.filter(start_time__lt =timezone.now()).filter(end_time__gt = timezone.now()).order_by('start_time')
     if len(now_events) > 0:
         now_event = now_events[0]
     else:
         now_event = None
     
     # next event
-    next_events = Event.objects.filter(start_time__gt=timezone.now())
+    next_events = Event.objects.filter(start_time__gt=timezone.now()).order_by('start_time')
     if len(next_events) > 0:
         next_event = next_events[0]
     else:
@@ -52,6 +52,7 @@ def index(request):
         'now_event': now_event,
         'next_event': next_event,
         'next_events': next_events,
+        'message': '',
     }
 
     return render(request, 'tours/index.html', context)
@@ -77,14 +78,11 @@ def newreq(request):
     tr.save()
 
     subject = "[CPW Tours] Simmons CPW Tours"
-    msg = "A tour was requested at "+timezone.localtime(req_time).strftime("%a %I:%M%p") +". If you're free, go to desk and press the black button on the back of the 'easy button' to claim it."
+    msg = "A tour was requested at "+timezone.localtime(req_time).strftime("%a %I:%M%p") +". If you're free, go speak to the desk worker to claim it (they will push 'w' on the computer keyboard that's there)"
     from_email = "simmons-tech@mit.edu"
 #    to_emails = ["larsj@mit.edu"]
     send_mail(subject, msg, from_email, to_emails, fail_silently=False)
     return HttpResponse("email sent: "+subject)
-
-
-    return HttpResponse("You created a new request!")
 
 def notifyreq(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('req_time')

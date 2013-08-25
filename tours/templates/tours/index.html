@@ -64,15 +64,20 @@ margin-bottom:0px;
 <div id='top' class='container'>
 Welcome to Simmons Hall! Simmons is home to 340 awesome undergraduates, 5,538 windows, and an unknown population of velociraptors. It’s a phenomenal place to call home during your time at the Institute, and we can’t wait to show you why!
 </div>
+<p>{{message}}</p>
 <div id='layout'>
 <div id='content'>
 <div id='leftbox'  class='container'>
-  <h2 style='margin-top:10px'>CPW Events</h2>
-  <p>We have 20 events planned for you over the weekend. Bring your friends, bring your A-game, and get ready to have a great time!</p>
+  <h2 style='margin-top:10px'>REX Events</h2>
+  <p>Welcome to MIT! We have over 30 events planned for you over the next few days. Bring your friends, bring your A-game, and get ready to have a great time!</p>
 {% if now_event %}
   <h3 style='text-align:center'>Right Now:</h3>
 <p style='text-align:center'><b>{{now_event.title}}</b> {{now_event.start_time|date:"g:i a"}} - {{now_event.end_time|date:"g:i a"}} <br />{{now_event.location}}</p>
 <p>{{now_event.description}}</p>
+{% if next_event %}
+  <h3 style='text-align:center'>Upcoming:</h3>
+<p style='text-align:center'><b>{{next_event.title}}:</b> {{next_event.start_time|date:"g:i a"}} - {{next_event.end_time|date:"g:i a"}} <br />{{next_event.location}}</p>
+{% endif %}
 {% elif next_event %}
   <h3 style='text-align:center'>Upcoming:</h3>
 <p style='text-align:center'><b>{{next_event.title}}:</b> {{next_event.start_time|date:"g:i a"}} - {{next_event.end_time|date:"g:i a"}} <br />{{next_event.location}}</p>
@@ -84,18 +89,15 @@ Welcome to Simmons Hall! Simmons is home to 340 awesome undergraduates, 5,538 wi
 
 <div id='rightbox' class='container'>
   <h2 style='margin-top:10px'>Dorm Tours</h2>
-Opened in 2002, Simmons has won multiple awards for its unique architectural aspects. We are offering tours throughout CPW!
+Opened in 2002, Simmons has won multiple awards for its unique architectural aspects. We are offering tours throughout REX!
   <p></p>
 {% if last_request %}
   <h3 style='text-align:center'>Tour Requested:</h3>
   <p>Thank you for requesting a tour! A tour guide should be down shortly. In the mean time, feel free to relax in the mailbox lounge.</p>
 {% else %}
-{% if last_tour %}
   <h3 style='text-align:center'>Request a Tour:</h3>
   <p>Speak with the desk worker to request a tour</p>
 
-{% else %}
-{% endif %}
 {% endif %}
 <p style='font-size:70%'>
 {% if last_tour %}
