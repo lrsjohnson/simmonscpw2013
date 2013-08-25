@@ -11,7 +11,6 @@ function claimRequest() {
 	url: "claim",
 	success: function( data ) {location.reload();}
     });
-2
 }
 function checkNotify() {
     $.ajax({
@@ -26,11 +25,11 @@ Keys to Functions
 */
 
 function onR(evt) {
-    newRequest();
+    //    newRequest();
 }
 
 function onC(evt) {
-    claimRequest();
+    //    claimRequest();
 }
 
 function checkkey(evt)

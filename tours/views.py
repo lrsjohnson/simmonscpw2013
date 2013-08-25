@@ -15,6 +15,19 @@ from events.models import Event
 to_emails = [] #"simmons-cpw-tours-automated@mit.edu"]
 
 def index(request):
+    # events happening now
+    events_happening_now = Event.objects.filter(start_time__lt = timezone.now()).filter(end_time__gt = timezone.now())
+    
+    # upcoming events
+    upcoming_events = Event.objects.filter(start_time__gt=timezone.now())
+    if len(upcoming_events) > 3:
+        upcoming_events = upcoming_events[:3]
+
+    if len(upcoming_events) > 0:
+        next_event = upcoming_events[0]
+    else:
+        next_event = None
+
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')
     claimed_reqs = TourReq.objects.filter(claimed=True).order_by('-claim_time')
 
@@ -31,37 +44,17 @@ def index(request):
         last_tour = None
     else:
         last_tour = claimed_reqs[0].claim_time
-
-    # now event
-    now_events = Event.objects.filter(start_time__lt =timezone.now()).filter(end_time__gt = timezone.now()).order_by('start_time')
-    if len(now_events) > 0:
-        now_event = now_events[0]
-    else:
-        now_event = None
-    
-    # next event
-    next_events = Event.objects.filter(start_time__gt=timezone.now()).order_by('start_time')
-    if len(next_events) > 0:
-        next_event = next_events[0]
-    else:
-        next_event = None
-    
+        
     context = {
         'last_tour': last_tour,
         'last_request': last_request,
-        'now_event': now_event,
+        'events_happening_now': events_happening_now,
         'next_event': next_event,
-        'next_events': next_events,
-        'message': '',
+        'upcoming_events': upcoming_events,
+        'events_beyond_next_event': upcoming_events[1:],
+        'message': events_happening_now,
     }
-
-    return render(request, 'tours/index.html', context)
-
-def indexMultipleEvents(request):
-    context = {
-    }
-    return render(request, 'tours/index-multiple-events.html', context)
-
+    return render(request, 'tours/monitor-schedule.html', context)
 
 def info(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')

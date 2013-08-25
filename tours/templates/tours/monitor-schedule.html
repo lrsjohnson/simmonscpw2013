@@ -1,0 +1,117 @@
+{% load staticfiles %}
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'tours/style.css' %}" />
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script language="javascript" src="{% static 'tours/js/main.js'%}"></script>
+
+<style>
+body {font-size:150%}
+#top {
+        position:absolute;
+
+        width:83%;
+	overflow:hidden;
+        margins:auto auto;
+        margin-top:220px;
+        margin-left:2%;
+        margin-bottom:100px;
+}
+#layout {
+        margin-top:120px;
+	clear:left;
+	float:left;
+	width:100%;
+	overflow:hidden;
+}
+#content {
+	float:left;
+	width:100%;
+	position:relative;
+	right:50%;
+}
+#leftbox {
+	float:left;
+	width:41%;
+	position:relative;
+	left:52%;
+	overflow:hidden;
+}
+#rightbox {
+	float:left;
+	width:41%;
+	position:relative;
+	left:56%;
+	overflow:hidden;
+}
+#wrapper {
+margin-left:100px;
+margin-right:0px;
+px;
+margin-bottom:0px;
+}
+</style>
+</head>
+<body>
+<div id='wrapper'>
+  <img class="bg" src="{%static 'tours/img/bg.jpg'%}" alt="" />
+  <header>
+    <h1>
+      <a><img id="simmons-logo" src="{% static 'tours/img/logo.png' %}"
+      alt="Simmons Hall" title="Simmons Hall" /></a>
+    </h1>
+  </header>
+<div id='top' class='container'>
+Welcome to Simmons Hall! Simmons is home to 340 awesome undergraduates, 5,538 windows, and an unknown population of velociraptors. It’s a phenomenal place to call home during your time at the Institute, and we can’t wait to show you why!
+</div>
+<div id='layout'>
+<div id='content'>
+<div id='leftbox'  class='container'>
+  <h2 style='margin-top:10px'>REX Events</h2>
+{% if events_happening_now.count > 0 %}
+  <p>Welcome to MIT! We have over 30 events planned for you over the next few days. Bring your friends, bring your A-game, and get ready to have a great time!</p>
+  <hr />
+  <h3 style='text-align:center; '>Right Now:</h3>
+{% for now_event in events_happening_now %}
+<p style='text-align:center'><b>{{now_event.title}}</b> &nbsp; {{now_event.start_time|date:"g:i a"}} - {{now_event.end_time|date:"g:i a"}} <br />{{now_event.location}}</p>
+<p>{{now_event.description}}</p>
+<p style='font-size:10px;'>&nbsp;</p>
+{% endfor %}
+{% if next_event %}
+<hr />
+<h3 style='text-align:center; '>Upcoming:</h3>
+{% for next_event in upcoming_events %}
+<p style='text-align:center'><b>{{next_event.title}}</b> &nbsp; {{next_event.start_time|date:"g:i a"}} - {{next_event.end_time|date:"g:i a"}} @ {{next_event.location}}</p>
+{% endfor %}
+{% endif %}
+{% elif next_event %}
+  <p>We have over 30 events planned for you over the next few days. Unfortunately, none of them are scheduled for right now which probably means you should be at some mandatory orientation event or sleeping. =P
+  </p><p>
+    <p style='font-size:10px'>&nbsp;</p>
+    If you're looking for more to do, feel free to talk with upperclassmen or check out a movie or game from desk. See you at our next event:</p>
+    <p style='font-size:10px'>&nbsp;</p>
+<hr />
+  <h3 style='text-align:center'>Next Event:</h3>
+<p style='text-align:center'><b>{{next_event.title}}</b> &nbsp; {{next_event.start_time|date:"g:i a"}} - {{next_event.end_time|date:"g:i a"}} @ {{next_event.location}}</p>
+<p>{{next_event.description}}</p>
+<hr />
+<h3 style='text-align:center; '>Upcoming:</h3>
+{% for next_event in events_beyond_next_event %}
+<p style='text-align:center'><b>{{next_event.title}}</b> &nbsp; {{next_event.start_time|date:"g:i a"}} - {{next_event.end_time|date:"g:i a"}} @ {{next_event.location}}</p>
+{% endfor %}
+{% else %}
+  <p>Looks like that's the end of our events! Hope you had a great REX.</p>
+{% endif %}
+</div>
+
+<div id='rightbox' class='container'>
+  <h2 style='margin-top:10px'>Dorm Tours</h2>
+Opened in 2002, Simmons has won multiple awards for its unique architectural aspects. We are offering tours throughout REX!
+  <hr />
+  <h3 style='text-align:center'>Request a Tour:</h3>
+  <p>Speak with any upperclassmen Simmons resident (bright-colored Simmons shirts) about getting a tour.</p>
+</div>
+</div>
+</div>
+</div>
+</body>

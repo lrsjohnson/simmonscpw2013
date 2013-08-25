@@ -4,7 +4,6 @@ from tours import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
-                       url(r'^multipleEvents$', views.indexMultipleEvents, name='multipleEvents'),
                        url(r'^info$', views.info, name='info'),
                        url(r'^new$', views.newreq, name='new'),
                        url(r'^notify$', views.notifyreq, name='notify'),

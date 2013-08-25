@@ -265,6 +265,21 @@ td { vertical-align: top; }
    ========================================================================== */
 
 
+p {
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
+hr {
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+h3 {
+   margin-top: 5px;
+   margin-bottom: 15px;
+}
+
 img.bg {
 	/* Set rules to fill background */
 	min-height: 100%;
