@@ -57,6 +57,11 @@ def index(request):
 
     return render(request, 'tours/index.html', context)
 
+def indexMultipleEvents(request):
+    context = {
+    }
+    return render(request, 'tours/index-multiple-events.html', context)
+
 
 def info(request):
     unclaimed_reqs = TourReq.objects.filter(claimed=False).order_by('-req_time')

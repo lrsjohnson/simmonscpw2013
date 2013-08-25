@@ -46,6 +46,6 @@ $(document).ready(function(){
 });
 
 window.setInterval(function(){
-    window.reload();
-}, 600000);
+    location.reload();
+}, 30000);
 
