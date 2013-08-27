@@ -16,10 +16,10 @@ to_emails = [] #"simmons-cpw-tours-automated@mit.edu"]
 
 def index(request):
     # events happening now
-    events_happening_now = Event.objects.filter(start_time__lt = timezone.now()).filter(end_time__gt = timezone.now())
+    events_happening_now = Event.objects.filter(start_time__lt = timezone.now()).filter(end_time__gt = timezone.now()).order_by('-start_time')
     
     # upcoming events
-    upcoming_events = Event.objects.filter(start_time__gt=timezone.now())
+    upcoming_events = Event.objects.filter(start_time__gt=timezone.now()).order_by('start_time')
     if len(upcoming_events) > 3:
         upcoming_events = upcoming_events[:3]
 
